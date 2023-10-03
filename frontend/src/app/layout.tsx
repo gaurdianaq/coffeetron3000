@@ -18,9 +18,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const client = createClient({
-    space: "wd2ucjfyw3mc",
-    environment: "master",
-    accessToken: "0yoCyfXL6MdGSygxgrb9R2WG5LNJMlSABzuq5IoMSAg",
+    space: process.env.CONTENTFUL_SPACE || "",
+    environment: process.env.CONTENTFUL_ENV,
+    accessToken: process.env.CONTENTFUL_ACCESS_TOKEN || "",
   });
 
   const navbarEntry = await client
