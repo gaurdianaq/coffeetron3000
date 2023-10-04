@@ -6,5 +6,6 @@ import contentfulConfig from "./config/contentfulConfig";
 @Module({
   imports: [ConfigModule.forFeature(contentfulConfig)],
   providers: [ContentfulService],
+  exports: [ContentfulService],
 })
 export class ContentfulModule {}
