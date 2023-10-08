@@ -2,8 +2,9 @@ import { Navbar } from "@/components/NavBar/navbar";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { createClient } from "contentful";
-import { INavbar } from "@/types";
+
+//TODO import this properly as an actual package once I figure out why the heck next can't find this
+import { INavbarProps } from "../../../shared_types/types";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,16 +18,13 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const navbarEntry: INavbar = await fetch(
+  const navbarEntry: INavbarProps = await fetch(
     "http://localhost:3000/components/navbar"
   ).then((response) => {
     return response.json().then((result) => {
       return result;
     });
   });
-
-  console.log(typeof navbarEntry);
-  console.log(navbarEntry);
 
   return (
     <html lang="en">

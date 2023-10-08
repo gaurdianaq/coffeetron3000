@@ -5,7 +5,7 @@ import { CoffeesService } from "./coffees.service";
 export class CoffeesController {
   constructor(private readonly coffeesService: CoffeesService) {}
 
-  @Get("getCoffee/:id")
+  @Get(":id")
   findOne(@Param("id") id: string) {
     return this.coffeesService.getOne(id);
   }

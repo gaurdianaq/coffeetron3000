@@ -1,17 +1,9 @@
-import { TNavItem } from "@/types";
-import { List } from "immutable";
 import Link from "next/link";
 
-export interface INavbarProps {
-  logoSrc?: string; //Image source for logo
-  navItems?: TNavItem[];
-}
+//TODO import this properly as an actual package once I figure out why the heck next can't find this
+import { INavbarProps } from "../../../../shared_types/types";
 
 export const Navbar = ({ navItems }: INavbarProps) => {
-  console.log("navItems in navbar component", navItems);
-  console.log("typeoof navItems", typeof navItems);
-  //@ts-ignore
-  console.log(navItems.navItems);
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
@@ -21,9 +13,7 @@ export const Navbar = ({ navItems }: INavbarProps) => {
         <div className="navbar-start">
           {navItems &&
             navItems.map((navItem) => {
-              console.log("navItem", navItem);
-              if ("links" in navItem) {
-                console.log("typeof links", typeof navItem.links);
+              if ("navbarLinks" in navItem) {
                 return (
                   <div
                     key={navItem.label}
@@ -31,7 +21,7 @@ export const Navbar = ({ navItems }: INavbarProps) => {
                   >
                     <div className="navbar-item">{navItem.label}</div>
                     <div className="navbar-dropdown">
-                      {navItem.links.map((link) => {
+                      {navItem.navbarLinks.map((link) => {
                         return (
                           <Link
                             key={navItem.label}

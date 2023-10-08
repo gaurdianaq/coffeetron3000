@@ -1,4 +1,4 @@
-import { TLink } from "./componentProps";
+import { ICoffee, TLink } from "./types";
 import { Entry } from "./contentfulTypes";
 
 export interface ILinkEntry extends Entry<TLink> {}
@@ -16,3 +16,5 @@ export interface INavbarEntry {
   logoSrc?: string;
   navbarItems: TNavItemEntry[];
 }
+
+export interface ICoffeeEntry extends Entry<ICoffee> {}

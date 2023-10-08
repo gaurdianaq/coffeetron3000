@@ -3,7 +3,6 @@
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
-    "emitDeclarationOnly": true,
     "allowSyntheticDefaultImports": true,
     "target": "ES2021",
     "sourceMap": true,

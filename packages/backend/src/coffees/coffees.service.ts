@@ -1,7 +1,6 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { ContentfulService } from "src/contentful/contentful.service";
-import { ICoffeeEntry } from "./entities/coffeeEntry.entity";
-import { ICoffee } from "./entities/coffee.entity";
+import { ICoffee } from "shared_types/types";
 
 @Injectable()
 export class CoffeesService {
@@ -9,6 +8,8 @@ export class CoffeesService {
 
   async getOne(coffeeID: string): Promise<ICoffee> {
     const coffee = await this.contentfulService.getEntry<ICoffee>(coffeeID);
+    console.log(coffee.fields);
+    console.log(coffee.fields.richTextDescription);
     return coffee.fields;
   }
 

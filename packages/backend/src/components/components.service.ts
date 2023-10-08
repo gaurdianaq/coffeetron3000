@@ -1,6 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { ContentfulService } from "src/contentful/contentful.service";
-import { INavbarEntry, TNavItemEntry } from "shared_types/componentTypes";
+import {
+  INavbarEntry,
+  TNavItemEntry,
+} from "shared_types/componentContentfulTypes";
+import { TDropDown } from "shared_types/types";
 
 @Injectable()
 export class ComponentsService {
@@ -27,10 +31,10 @@ export class ComponentsService {
           if ("navbarLinks" in navItem.fields) {
             return {
               label: navItem.fields.label,
-              links: navItem.fields.navbarLinks.map((navBarLink) => {
+              navbarLinks: navItem.fields.navbarLinks.map((navBarLink) => {
                 return navBarLink.fields;
               }),
-            };
+            } as TDropDown;
           }
           return navItem.fields;
         }
