@@ -4,7 +4,9 @@ import {
   INavbarEntry,
   TNavItemEntry,
 } from "shared_types/componentContentfulTypes";
-import { TDropDown } from "shared_types/types";
+import { INavbarProps, TAPIError, TDropDown } from "shared_types/types";
+import { createError } from "shared_types/utils";
+import { ResultAsync, okAsync } from "neverthrow";
 
 @Injectable()
 export class ComponentsService {
@@ -18,27 +20,31 @@ export class ComponentsService {
   }
 
   //TODO figure out how to get the typing of this working as expected
-  private async getNavbarProps(navbarTitle: string = "MainNav") {
-    const navbarEntry = await this.contentfulService.getEntries<INavbarEntry>({
-      content_type: "navbar",
-      "fields.title": navbarTitle,
-      include: 2,
-    });
-
-    return {
-      navItems: navbarEntry.items[0].fields.navbarItems.map(
-        (navItem: TNavItemEntry) => {
-          if ("navbarLinks" in navItem.fields) {
-            return {
-              label: navItem.fields.label,
-              navbarLinks: navItem.fields.navbarLinks.map((navBarLink) => {
-                return navBarLink.fields;
-              }),
-            } as TDropDown;
-          }
-          return navItem.fields;
-        }
-      ),
-    };
+  private getNavbarProps(
+    navbarTitle: string = "MainNav"
+  ): ResultAsync<INavbarProps, TAPIError> {
+    return this.contentfulService
+      .getEntries<INavbarEntry>({
+        content_type: "navbar",
+        "fields.title": navbarTitle,
+        include: 2,
+      })
+      .andThen((entries) => {
+        return okAsync({
+          navbarItems: entries.items[0].fields.navbarItems.map(
+            (navItem: TNavItemEntry) => {
+              if ("navbarLinks" in navItem.fields) {
+                return {
+                  label: navItem.fields.label,
+                  navbarLinks: navItem.fields.navbarLinks.map((navBarLink) => {
+                    return navBarLink.fields;
+                  }),
+                } as TDropDown;
+              }
+              return navItem.fields;
+            }
+          ),
+        } as INavbarProps);
+      });
   }
 }

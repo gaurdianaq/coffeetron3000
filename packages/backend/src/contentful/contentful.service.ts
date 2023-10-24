@@ -1,6 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common";
 import {
-  ChainModifiers,
   ContentfulClientApi,
   EntriesQueries,
   EntryQueries,
@@ -10,6 +9,9 @@ import {
 import contentfulConfig from "./config/contentfulConfig";
 import { ConfigType } from "@nestjs/config";
 import { Entry, EntryCollection } from "shared_types/contentfulTypes";
+import { ResultAsync } from "neverthrow";
+import { TAPIError } from "shared_types/types";
+import { createError } from "shared_types/utils";
 
 @Injectable()
 export class ContentfulService {
@@ -19,19 +21,28 @@ export class ContentfulService {
     private contentfulConfiguration: ConfigType<typeof contentfulConfig>
   ) {
     this.client = createClient(this.contentfulConfiguration);
-    console.log("initializing contentful service");
   }
 
   getEntry<T>(
     entryID: string,
     query?: EntryQueries<undefined>
-  ): Promise<Entry<T>> {
-    return this.client.getEntry(entryID, query) as Promise<Entry<T>>;
+  ): ResultAsync<Entry<T>, TAPIError> {
+    return ResultAsync.fromPromise(
+      this.client.getEntry(entryID, query) as Promise<Entry<T>>,
+      (error) => {
+        return createError(400, error);
+      }
+    );
   }
 
   getEntries<T>(
     query: EntriesQueries<EntrySkeletonType, undefined>
-  ): Promise<EntryCollection<T>> {
-    return this.client.getEntries(query) as Promise<EntryCollection<T>>;
+  ): ResultAsync<EntryCollection<T>, TAPIError> {
+    return ResultAsync.fromPromise(
+      this.client.getEntries(query) as Promise<EntryCollection<T>>,
+      (error) => {
+        return createError(400, error);
+      }
+    );
   }
 }

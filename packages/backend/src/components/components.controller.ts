@@ -1,6 +1,7 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Get, HttpException, Param } from "@nestjs/common";
 import { ContentfulService } from "src/contentful/contentful.service";
 import { ComponentsService } from "./components.service";
+import { INavbarProps, TAPIError } from "shared_types/types";
 
 @Controller("components")
 export class ComponentsController {
@@ -8,8 +9,15 @@ export class ComponentsController {
 
   @Get(":id")
   async getComponent(@Param("id") id: string) {
-    const props = await this.componentService.getComponentProps(id);
-    console.log(props);
-    return props;
+    return await this.componentService
+      .getComponentProps(id)
+      .match<INavbarProps>(
+        (props) => {
+          return props;
+        },
+        (error) => {
+          throw new HttpException(error.message, error.statusCode);
+        }
+      );
   }
 }

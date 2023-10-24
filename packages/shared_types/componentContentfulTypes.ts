@@ -1,4 +1,4 @@
-import { ICoffee, TLink } from "./types";
+import { ICoffee, ICoffeeBrand, TLink, INavbarProps } from "./types";
 import { Entry } from "./contentfulTypes";
 
 export interface ILinkEntry extends Entry<TLink> {}
@@ -11,10 +11,12 @@ export interface IDropDownEntry
 
 export type TNavItemEntry = ILinkEntry | IDropDownEntry;
 
-export interface INavbarEntry {
-  title: string;
-  logoSrc?: string;
+export interface INavbarEntry extends Omit<INavbarProps, "navbarItems"> {
   navbarItems: TNavItemEntry[];
 }
 
-export interface ICoffeeEntry extends Entry<ICoffee> {}
+export interface ICoffeeEntry extends Omit<ICoffee, "brand"> {
+  brand: ICoffeeBrandEntry;
+}
+
+export interface ICoffeeBrandEntry extends Entry<ICoffeeBrand> {}

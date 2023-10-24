@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "exports": {
-    ".": "./dist"
+    ".": "./dist",
+    "./utils": "./dist/utils.js"
   },
   "scripts": {
     "build": "tsc"
