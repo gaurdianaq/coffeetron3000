@@ -5,23 +5,38 @@ import {
   HttpException,
   Param,
   Post,
+  Query,
 } from "@nestjs/common";
 import { CoffeesService } from "./coffees.service";
+import { TCoffeeHit } from "shared_types/types";
 
 @Controller("coffees")
 export class CoffeesController {
   constructor(private readonly coffeesService: CoffeesService) {}
 
-  @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.coffeesService.getOne(id).match(
-      (coffee) => {
-        return coffee;
-      },
-      (error) => {
-        throw new HttpException(error.message, error.statusCode);
-      }
-    );
+  @Get("searchCoffee")
+  searchCoffee(
+    @Query() query: { searchQuery: string; page: number; pageSize: number }
+  ) {
+    return this.coffeesService
+      .search(query.searchQuery, query.page, query.pageSize)
+      .match(
+        (results) => {
+          console.log(results);
+          return results.hits.map((hit): TCoffeeHit => {
+            return {
+              objectID: hit.objectID,
+              name: hit.name,
+              brand: hit.brand,
+              shortDescription: hit.shortDescription,
+              roast: hit.roast,
+            };
+          });
+        },
+        (error) => {
+          throw new HttpException(error.message, error.statusCode);
+        }
+      );
   }
 
   @Get("getCoffees")
@@ -29,6 +44,18 @@ export class CoffeesController {
     return this.coffeesService.getAll().match(
       (coffees) => {
         return coffees;
+      },
+      (error) => {
+        throw new HttpException(error.message, error.statusCode);
+      }
+    );
+  }
+
+  @Get(":id")
+  findOne(@Param("id") id: string) {
+    return this.coffeesService.getOne(id).match(
+      (coffee) => {
+        return coffee;
       },
       (error) => {
         throw new HttpException(error.message, error.statusCode);

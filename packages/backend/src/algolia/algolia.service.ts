@@ -44,4 +44,23 @@ export class AlgoliaService {
       });
     });
   }
+
+  search<T>(
+    indexName: string,
+    query: string,
+    page: number = 0,
+    pageSize: number = 10
+  ) {
+    return this.safeInit(indexName).asyncAndThen((index) => {
+      return ResultAsync.fromPromise(
+        index.search<T>(query, {
+          hitsPerPage: pageSize,
+          page: page,
+        }),
+        (error) => {
+          return createError(400, error);
+        }
+      );
+    });
+  }
 }

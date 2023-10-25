@@ -3,16 +3,26 @@ import Link from "next/link";
 //TODO import this properly as an actual package once I figure out why the heck next can't find this
 import { INavbarProps } from "../../../../shared_types/types";
 
-export const Navbar = ({ navItems }: INavbarProps) => {
+export const Navbar = ({ navbarItems }: INavbarProps) => {
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
-        <div className="navbar-burger" />
+        <a
+          role="button"
+          className="navbar-burger"
+          aria-label="menu"
+          aria-expanded="false"
+          data-target="myNavbar"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
       </div>
-      <div className="navbar-menu">
+      <div id="myNavbar" className="navbar-menu">
         <div className="navbar-start">
-          {navItems &&
-            navItems.map((navItem) => {
+          {navbarItems &&
+            navbarItems.map((navItem) => {
               if ("navbarLinks" in navItem) {
                 return (
                   <div

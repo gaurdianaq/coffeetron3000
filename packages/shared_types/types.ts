@@ -33,6 +33,11 @@ export interface ICoffee {
   name: string;
   roast: string;
   richTextDescription: Document; //need to figure out what to type this as, there seems to be a document type, but it's not exported
-  shortTextDescription: string;
+  shortDescription: string;
   brand: ICoffeeBrand;
 }
+
+export type TCoffeeHit = Omit<ICoffee, "richTextDescription" | "brand"> & {
+  objectID: string;
+  brand: string;
+};

@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, Injectable } from "@nestjs/common";
 import { ContentfulService } from "src/contentful/contentful.service";
-import { ICoffee, TAPIError } from "shared_types/types";
+import { ICoffee, TAPIError, TCoffeeHit } from "shared_types/types";
 import { AlgoliaService } from "src/algolia/algolia.service";
 import { SearchIndex } from "algoliasearch";
 import { ICoffeeEntry } from "shared_types/componentContentfulTypes";
@@ -8,7 +8,6 @@ import { ResultAsync } from "neverthrow";
 
 @Injectable()
 export class CoffeesService {
-  private algolaIndex: SearchIndex;
   private COFFEE_INDEX_NAME = "coffee-index";
   constructor(
     private readonly contentfulService: ContentfulService,
@@ -25,7 +24,7 @@ export class CoffeesService {
           name: coffee.fields.name,
           roast: coffee.fields.roast,
           richTextDescription: coffee.fields.richTextDescription,
-          shortTextDescription: coffee.fields.shortTextDescription,
+          shortDescription: coffee.fields.shortDescription,
           brand: coffee.fields.brand.fields,
         };
       });
@@ -42,7 +41,7 @@ export class CoffeesService {
             name: coffee.fields.name,
             roast: coffee.fields.roast,
             richTextDescription: coffee.fields.richTextDescription,
-            shortTextDescription: coffee.fields.shortTextDescription,
+            shortDescription: coffee.fields.shortDescription,
             brand: coffee.fields.brand.fields,
           };
         });
@@ -57,24 +56,23 @@ export class CoffeesService {
           objectID: entry.sys.id,
           name: entry.fields.name,
           roast: entry.fields.roast,
-          shortTextDescription: entry.fields.shortTextDescription,
+          shortDescription: entry.fields.shortDescription,
           brand: entry.fields.brand.fields.name,
         });
       });
   }
 
-  async search(
+  search(
     query: string,
-    page: number = 1,
+    page: number = 0,
     pageSize: number = 10,
-    offset: number = 0,
     locale: string = "en-US"
   ) {
-    const results = await this.algolaIndex.search(query, {
-      hitsPerPage: pageSize,
-      page: page,
-      offset: offset,
-    });
-    return results.hits;
+    return this.algoliaService.search<TCoffeeHit>(
+      this.COFFEE_INDEX_NAME,
+      query,
+      page,
+      pageSize
+    );
   }
 }

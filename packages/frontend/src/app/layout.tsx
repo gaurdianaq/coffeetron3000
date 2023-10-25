@@ -29,7 +29,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar navItems={navbarEntry.navItems} />
+        <Navbar title="something" navbarItems={navbarEntry.navbarItems} />
         {children}
       </body>
     </html>
