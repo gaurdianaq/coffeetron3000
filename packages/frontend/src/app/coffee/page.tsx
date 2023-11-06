@@ -3,7 +3,7 @@ import { TCoffeeHit } from "../../../../shared_types/types";
 
 export default async function Page() {
   const coffeeListing = await fetch(
-    process.env.BACKEND_URL + "/coffees/searchCoffee",
+    `${process.env.BACKEND_URL}/coffees/searchCoffee`,
     {
       cache: "no-store",
     }
@@ -13,7 +13,6 @@ export default async function Page() {
     });
   });
 
-  console.log(coffeeListing);
   return (
     <main className="container">
       <section

@@ -4,8 +4,8 @@ import { SaveObjectResponse, DeleteResponse } from "@algolia/client-search";
 import algoliaConfig from "./config/algoliaConfig";
 import { ConfigType } from "@nestjs/config";
 import { ResultAsync, Result } from "neverthrow";
-import { TAPIError } from "shared_types/types";
-import { createError } from "shared_types/utils";
+import { TAPIResponseMessage } from "shared_types/types";
+import { createResponseMessage } from "shared_types/utils";
 
 @Injectable()
 export class AlgoliaService {
@@ -18,7 +18,7 @@ export class AlgoliaService {
     this.safeInit = Result.fromThrowable(
       this.algoliaClient.initIndex,
       (error) => {
-        return createError(400, error);
+        return createResponseMessage(400, error);
       }
     );
   }
@@ -26,10 +26,10 @@ export class AlgoliaService {
   saveContentToIndex(
     indexName: string,
     content: unknown
-  ): ResultAsync<SaveObjectResponse, TAPIError> {
+  ): ResultAsync<SaveObjectResponse, TAPIResponseMessage> {
     return this.safeInit(indexName).asyncAndThen((index) => {
       return ResultAsync.fromPromise(index.saveObject(content), (error) => {
-        return createError(400, error);
+        return createResponseMessage(400, error);
       });
     });
   }
@@ -37,10 +37,10 @@ export class AlgoliaService {
   deleteContentFromIndex(
     indexName: string,
     objectID: string
-  ): ResultAsync<DeleteResponse, TAPIError> {
+  ): ResultAsync<DeleteResponse, TAPIResponseMessage> {
     return this.safeInit(indexName).asyncAndThen((index) => {
       return ResultAsync.fromPromise(index.deleteObject(objectID), (error) => {
-        return createError(400, error);
+        return createResponseMessage(400, error);
       });
     });
   }
@@ -58,7 +58,7 @@ export class AlgoliaService {
           page: page,
         }),
         (error) => {
-          return createError(400, error);
+          return createResponseMessage(400, error);
         }
       );
     });

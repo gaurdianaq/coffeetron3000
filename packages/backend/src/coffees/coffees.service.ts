@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from "@nestjs/common";
 import { ContentfulService } from "src/contentful/contentful.service";
-import { ICoffee, TAPIError, TCoffeeHit } from "shared_types/types";
+import { ICoffee, TAPIResponseMessage, TCoffeeHit } from "shared_types/types";
 import { AlgoliaService } from "src/algolia/algolia.service";
 import { SearchIndex } from "algoliasearch";
 import { ICoffeeEntry } from "shared_types/componentContentfulTypes";
@@ -14,7 +14,7 @@ export class CoffeesService {
     private readonly algoliaService: AlgoliaService
   ) {}
 
-  getOne(coffeeID: string): ResultAsync<ICoffee, TAPIError> {
+  getOne(coffeeID: string): ResultAsync<ICoffee, TAPIResponseMessage> {
     return this.contentfulService
       .getEntry<ICoffeeEntry>(coffeeID, {
         include: 2,
@@ -30,7 +30,7 @@ export class CoffeesService {
       });
   }
 
-  getAll(): ResultAsync<ICoffee[], TAPIError> {
+  getAll(): ResultAsync<ICoffee[], TAPIResponseMessage> {
     return this.contentfulService
       .getEntries<ICoffeeEntry>({
         content_type: "coffee",

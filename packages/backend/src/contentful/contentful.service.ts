@@ -10,8 +10,8 @@ import contentfulConfig from "./config/contentfulConfig";
 import { ConfigType } from "@nestjs/config";
 import { Entry, EntryCollection } from "shared_types/contentfulTypes";
 import { ResultAsync } from "neverthrow";
-import { TAPIError } from "shared_types/types";
-import { createError } from "shared_types/utils";
+import { TAPIResponseMessage } from "shared_types/types";
+import { createResponseMessage } from "shared_types/utils";
 
 @Injectable()
 export class ContentfulService {
@@ -26,22 +26,22 @@ export class ContentfulService {
   getEntry<T>(
     entryID: string,
     query?: EntryQueries<undefined>
-  ): ResultAsync<Entry<T>, TAPIError> {
+  ): ResultAsync<Entry<T>, TAPIResponseMessage> {
     return ResultAsync.fromPromise(
       this.client.getEntry(entryID, query) as Promise<Entry<T>>,
       (error) => {
-        return createError(400, error);
+        return createResponseMessage(400, error);
       }
     );
   }
 
   getEntries<T>(
     query: EntriesQueries<EntrySkeletonType, undefined>
-  ): ResultAsync<EntryCollection<T>, TAPIError> {
+  ): ResultAsync<EntryCollection<T>, TAPIResponseMessage> {
     return ResultAsync.fromPromise(
       this.client.getEntries(query) as Promise<EntryCollection<T>>,
       (error) => {
-        return createError(400, error);
+        return createResponseMessage(400, error);
       }
     );
   }

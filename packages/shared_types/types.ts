@@ -1,6 +1,6 @@
 import { Document } from "@contentful/rich-text-types";
 
-export type TAPIError = {
+export type TAPIResponseMessage = {
   statusCode: number;
   message: string | object;
 };

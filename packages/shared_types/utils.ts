@@ -1,9 +1,9 @@
-import { TAPIError } from "./types";
+import { TAPIResponseMessage } from "./types";
 
-export const createError = (
+export const createResponseMessage = (
   statusCode: number,
   message: unknown
-): TAPIError => {
+): TAPIResponseMessage => {
   return {
     statusCode,
     message: message as string | object, //unsure how better to handle this, often the error type returned from the fromPromise function is unknown

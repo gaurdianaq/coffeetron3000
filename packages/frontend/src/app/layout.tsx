@@ -19,7 +19,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const navbarEntry: INavbarProps = await fetch(
-    "http://localhost:3000/components/navbar"
+    `${process.env.BACKEND_URL}/components/navbar`,
+    { cache: "no-store" }
   ).then((response) => {
     return response.json().then((result) => {
       return result;

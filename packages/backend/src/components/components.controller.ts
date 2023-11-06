@@ -1,7 +1,7 @@
 import { Controller, Get, HttpException, Param } from "@nestjs/common";
 import { ContentfulService } from "src/contentful/contentful.service";
 import { ComponentsService } from "./components.service";
-import { INavbarProps, TAPIError } from "shared_types/types";
+import { INavbarProps, TAPIResponseMessage } from "shared_types/types";
 
 @Controller("components")
 export class ComponentsController {

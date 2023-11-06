@@ -4,8 +4,12 @@ import {
   INavbarEntry,
   TNavItemEntry,
 } from "shared_types/componentContentfulTypes";
-import { INavbarProps, TAPIError, TDropDown } from "shared_types/types";
-import { createError } from "shared_types/utils";
+import {
+  INavbarProps,
+  TAPIResponseMessage,
+  TDropDown,
+} from "shared_types/types";
+import { createResponseMessage } from "shared_types/utils";
 import { ResultAsync, okAsync } from "neverthrow";
 
 @Injectable()
@@ -22,7 +26,7 @@ export class ComponentsService {
   //TODO figure out how to get the typing of this working as expected
   private getNavbarProps(
     navbarTitle: string = "MainNav"
-  ): ResultAsync<INavbarProps, TAPIError> {
+  ): ResultAsync<INavbarProps, TAPIResponseMessage> {
     return this.contentfulService
       .getEntries<INavbarEntry>({
         content_type: "navbar",
