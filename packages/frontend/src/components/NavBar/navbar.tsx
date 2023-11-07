@@ -1,25 +1,35 @@
+"use client";
+
 import Link from "next/link";
 
 //TODO import this properly as an actual package once I figure out why the heck next can't find this
 import { INavbarProps } from "../../../../shared_types/types";
+import { useState } from "react";
 
 export const Navbar = ({ navbarItems }: INavbarProps) => {
+  const [hamburgerActive, setHamburgerActive] = useState(false);
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
         <a
           role="button"
-          className="navbar-burger"
+          className={`navbar-burger ${hamburgerActive ? "is-active" : ""}`}
           aria-label="menu"
           aria-expanded="false"
           data-target="myNavbar"
+          onClick={() => {
+            setHamburgerActive(!hamburgerActive);
+          }}
         >
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
         </a>
       </div>
-      <div id="myNavbar" className="navbar-menu">
+      <div
+        id="myNavbar"
+        className={`navbar-menu ${hamburgerActive ? "is-active" : ""}`}
+      >
         <div className="navbar-start">
           {navbarItems &&
             navbarItems.map((navItem) => {

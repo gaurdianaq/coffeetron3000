@@ -13,15 +13,17 @@ export class AuthenticationService {
   ) {}
 
   signUp(newUser: NewUser) {
+    console.log("signing up, about to hash");
     return this.hashingService
       .hash(newUser.password)
-      .andThen((hashedPassword) =>
-        this.userService.insertUser({
+      .andThen((hashedPassword) => {
+        console.log("hashed");
+        return this.userService.insertUser({
           email: newUser.email,
           userName: newUser.userName,
           password: hashedPassword,
-        })
-      );
+        });
+      });
   }
 
   signIn(userName: string, password: string) {

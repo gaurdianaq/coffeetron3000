@@ -1,7 +1,5 @@
-import { HttpException, Inject, Injectable } from "@nestjs/common";
-import { ConfigType } from "@nestjs/config";
+import { Inject, Injectable } from "@nestjs/common";
 import { Client } from "pg";
-import { ResultAsync } from "neverthrow";
 import { drizzle } from "drizzle-orm/node-postgres";
 
 @Injectable()
