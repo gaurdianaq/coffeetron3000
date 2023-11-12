@@ -1,5 +1,4 @@
 import { registerAs } from "@nestjs/config";
-import { AlgoliaSearchOptions } from "algoliasearch/lite";
 
 export default registerAs("algolia", () => {
   return {

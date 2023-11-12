@@ -17,13 +17,7 @@ import { ConfigModule, ConfigType } from "@nestjs/config";
           password: config.dbPassword,
           database: config.dbName,
         });
-        console.log({
-          host: config.dbHost || "localhost",
-          port: config.dbPort,
-          user: config.dbUser,
-          password: config.dbPassword,
-          database: config.dbName,
-        });
+
         await client.connect();
         return client;
       },

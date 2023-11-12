@@ -5,11 +5,12 @@ import {
   HttpException,
   HttpStatus,
   Post,
+  Res,
 } from "@nestjs/common";
 import { NewUser } from "src/users/users.schema";
 import { LoginData } from "./authentication.types";
-import { UsersService } from "src/users/users.service";
 import { AuthenticationService } from "./authentication.service";
+import { Response } from "express";
 
 @Controller("authentication")
 export class AuthenticationController {
@@ -17,17 +18,13 @@ export class AuthenticationController {
 
   @Post("sign-up")
   signUp(@Body() newUser: NewUser) {
-    console.log("user signing up");
-    console.log(newUser);
     return this.authService.signUp(newUser).match(
       () => {
-        console.log("success");
         return {
           message: "User successfully signed up",
         };
       },
       (error) => {
-        console.log(error);
         throw new HttpException(error.message, error.statusCode);
       }
     );
@@ -35,5 +32,26 @@ export class AuthenticationController {
 
   @HttpCode(HttpStatus.OK)
   @Post("sign-in")
-  signIn(@Body() loginData: LoginData) {}
+  signIn(
+    @Res({ passthrough: true }) response: Response,
+    @Body() loginData: LoginData
+  ) {
+    return this.authService.signIn(loginData).match(
+      (token) => {
+        console.log("setting token");
+        response.cookie("accessToken", token, {
+          httpOnly: true,
+          secure: false,
+          domain: "http://127.0.0.1",
+        });
+
+        return {
+          message: "User successfully signed in",
+        };
+      },
+      (error) => {
+        throw new HttpException(error.message, error.statusCode);
+      }
+    );
+  }
 }

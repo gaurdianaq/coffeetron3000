@@ -1,3 +1,5 @@
+"use client";
+
 //TODO import this properly as an actual package once I figure out why the heck next can't find this
 import { RichText } from "@/components/RichText/richtext";
 import { ICoffee } from "../../../../../shared_types/types";
@@ -5,7 +7,7 @@ import { ICoffee } from "../../../../../shared_types/types";
 export default async function Page({ params }: { params: { slug: string } }) {
   //TODO handle config in a way that will throw if it doesn't exist
   const coffeeData = await fetch(
-    `${process.env.BACKEND_URL}/coffees/${params.slug}`,
+    `http://127.0.0.1:3000/coffees/${params.slug}`,
     { cache: "no-store" }
   ).then((response) => {
     return response.json().then((coffee: ICoffee) => {

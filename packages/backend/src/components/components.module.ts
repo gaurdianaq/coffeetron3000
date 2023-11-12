@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { ComponentsController } from "./components.controller";
 import { ContentfulModule } from "src/contentful/contentful.module";
-import { ComponentsService } from './components.service';
+import { ComponentsService } from "./components.service";
 
 @Module({
   imports: [ContentfulModule],

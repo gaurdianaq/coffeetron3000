@@ -13,8 +13,6 @@ export class UsersService {
   ) {}
 
   insertUser(user: NewUser) {
-    console.log("inserting into database");
-    console.log(user);
     return ResultAsync.fromPromise(
       this.databaseService.drizzleClient.insert(this.userTable).values(user),
       (error) => {

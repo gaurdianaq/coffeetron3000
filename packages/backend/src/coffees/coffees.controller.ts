@@ -6,9 +6,11 @@ import {
   Param,
   Post,
   Query,
+  UseGuards,
 } from "@nestjs/common";
 import { CoffeesService } from "./coffees.service";
 import { TCoffeeHit } from "shared_types/types";
+import { ApiKeyGuard } from "src/common/api-key/api-key.guard";
 
 @Controller("coffees")
 export class CoffeesController {
@@ -22,7 +24,6 @@ export class CoffeesController {
       .search(query.searchQuery, query.page, query.pageSize)
       .match(
         (results) => {
-          console.log(results);
           return results.hits.map((hit): TCoffeeHit => {
             return {
               objectID: hit.objectID,
@@ -63,6 +64,7 @@ export class CoffeesController {
     );
   }
 
+  @UseGuards(ApiKeyGuard)
   @Post("indexCoffee")
   indexCoffee(@Body() coffeeEntry: { entryId: string }) {
     return this.coffeesService.indexCoffee(coffeeEntry.entryId).match(

@@ -6,8 +6,6 @@ interface IRichTextProps {
 }
 
 export const RichText = ({ document }: IRichTextProps) => {
-  console.log("this is clint side!");
-  console.log(document);
   return documentToReactComponents(document, {
     renderNode: {
       [BLOCKS.PARAGRAPH]: (node, children) => {

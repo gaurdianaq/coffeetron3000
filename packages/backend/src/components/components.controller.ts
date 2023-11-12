@@ -1,14 +1,24 @@
-import { Controller, Get, HttpException, Param } from "@nestjs/common";
-import { ContentfulService } from "src/contentful/contentful.service";
+import {
+  Controller,
+  Get,
+  HttpException,
+  Param,
+  UseGuards,
+  Req,
+} from "@nestjs/common";
 import { ComponentsService } from "./components.service";
 import { INavbarProps, TAPIResponseMessage } from "shared_types/types";
+import { ApiKeyGuard } from "src/common/api-key/api-key.guard";
+import { Request } from "express";
 
 @Controller("components")
+@UseGuards(ApiKeyGuard)
 export class ComponentsController {
   constructor(private readonly componentService: ComponentsService) {}
 
   @Get(":id")
-  async getComponent(@Param("id") id: string) {
+  async getComponent(@Param("id") id: string, @Req() request: Request) {
+    console.log(request.cookies);
     return await this.componentService
       .getComponentProps(id)
       .match<INavbarProps>(

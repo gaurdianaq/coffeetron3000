@@ -14,7 +14,12 @@ export default async function RootLayout({
 }) {
   const navbarEntry: INavbarProps = await fetch(
     `${process.env.BACKEND_URL}/components/navbar`,
-    { cache: "no-store" }
+    {
+      cache: "no-store",
+      headers: {
+        "x-api-key": process.env.X_API_KEY || "",
+      },
+    }
   ).then((response) => {
     return response.json().then((result) => {
       return result;

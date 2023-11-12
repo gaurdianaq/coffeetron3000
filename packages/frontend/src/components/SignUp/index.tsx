@@ -23,10 +23,7 @@ export const SignUp = () => {
           (fields) => {
             signupSubmit(fields);
           },
-          (error) => {
-            console.log("woopsy doo");
-            console.log(error);
-          }
+          (error) => {}
         )}
       >
         <TextField
